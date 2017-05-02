@@ -1,0 +1,41 @@
+- name: install dev tools
+  yum: name={{ item }} state=present
+  with_items:
+    - gcc
+    - gcc-c++
+    - make
+    - openssl-devel
+    - patch
+    - readline
+    - readline-devel
+    - libxslt-devel
+    - libxml2-devel
+  sudo: yes
+
+- name: clone rbenv
+  git: repo=https://github.com/sstephenson/rbenv.git dest=/usr/local/rbenv update=yes
+  sudo: yes
+  async: 7200
+  poll: 5
+
+- name: copy rbenv.sh
+  copy: src=rbenv.sh dest=/etc/profile.d/rbenv.sh mode=0644 group=users
+  sudo: yes
+
+- name: create plugins directory
+  file: path=/usr/local/rbenv/plugins state=directory owner=root group=users mode=0755
+  sudo: yes
+
+- name: clone ruby-build
+  git: repo=https://github.com/sstephenson/ruby-build.git dest=/usr/local/rbenv/plugins/ruby-build update=yes
+  sudo: yes
+  async: 7200
+  poll: 5
+
+- name: exec rbenv.sh
+  command: bash /etc/profile.d/rbenv.sh
+  sudo: yes
+
+- name: install ruby
+  command: rbenv install 2.3.4
+  sudo: yes

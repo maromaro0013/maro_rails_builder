@@ -2,3 +2,4 @@
   roles:
     - repository
     - git
+    - ruby
