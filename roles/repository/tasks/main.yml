@@ -1,0 +1,11 @@
+- name: check IUS repository
+  command: rpm -q ius-release
+  ignore_errors: True
+  register: isInstallIUS
+
+- name: install IUS repository
+  yum: name=http://dl.iuscommunity.org/pub/ius/archive/CentOS/6/x86_64/ius-release-1.0-14.ius.centos6.noarch.rpm state=present
+  sudo: yes
+  when: isInstallIUS.rc == 1
+  async: 7200
+  poll: 5

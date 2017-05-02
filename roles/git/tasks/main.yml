@@ -1,0 +1,13 @@
+- name: remove git package
+  yum: name=git* state=absent
+  sudo: yes
+  tags: git
+  async: 7200
+  poll: 5
+
+- name: install git-all
+  yum: name=git2u-all state=installed
+  sudo: yes
+  tags: git
+  async: 7200
+  poll: 5

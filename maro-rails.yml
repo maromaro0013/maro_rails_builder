@@ -1,0 +1,4 @@
+- hosts: maro-rails1
+  roles:
+    - repository
+    - git
